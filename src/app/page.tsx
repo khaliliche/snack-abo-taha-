@@ -1,10 +1,13 @@
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
+import Marquee from "@/components/Marquee";
 import About from "@/components/About";
+import Showcase from "@/components/Showcase";
 import MenuSection from "@/components/MenuSection";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
-import { whatsappLink } from "@/data/site";
+import WhatsAppButton from "@/components/WhatsAppButton";
+import Cursor from "@/components/Cursor";
 
 export default function Home() {
   return (
@@ -12,20 +15,15 @@ export default function Home() {
       <Navbar />
       <main>
         <Hero />
+        <Marquee />
         <About />
+        <Showcase />
         <MenuSection />
         <Contact />
       </main>
       <Footer />
-      <a
-        href={whatsappLink()}
-        target="_blank"
-        rel="noopener noreferrer"
-        aria-label="Commander sur WhatsApp"
-        className="fixed bottom-5 right-5 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-[#25D366] text-2xl text-white shadow-lg transition hover:scale-105"
-      >
-        💬
-      </a>
+      <WhatsAppButton />
+      <Cursor />
     </>
   );
 }

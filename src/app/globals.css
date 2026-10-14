@@ -1,25 +1,428 @@
 @import "tailwindcss";
 
 @theme inline {
-  --color-brand: #1e7a34;
-  --color-brand-dark: #14532a;
-  --color-cream: #fbf6e6;
-  --color-gold: #d99a00;
-  --color-maroon: #7a1f1f;
-  --font-serif: var(--font-playfair);
-  --font-sans: var(--font-inter);
+  --color-olive: #596040;
+  --color-olive-deep: #2b3121;
+  --color-moss: #3d4729;
+  --color-ivory: #f3ead2;
+  --color-paper: #f6f0df;
+  --color-sand: #e8dcbc;
+  --color-saffron: #e3a72f;
+  --color-harissa: #b8371f;
+  --color-ink: #1b1f14;
+  --font-serif: var(--font-cormorant);
+  --font-sans: var(--font-dmsans);
+}
+
+:root {
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 html {
   scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
 }
 
 body {
-  background: var(--color-cream);
-  color: #2b2b2b;
+  background: var(--color-paper);
+  color: var(--color-ink);
   font-family: var(--font-sans), system-ui, sans-serif;
+  overflow-x: clip;
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: var(--color-saffron);
+  color: var(--color-ink);
 }
 
 section[id] {
-  scroll-margin-top: 4.5rem;
+  scroll-margin-top: 3rem;
+}
+
+/* ---------- Film grain over everything ---------- */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  pointer-events: none;
+  opacity: 0.07;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+}
+
+/* ---------- Generic reveal ---------- */
+.reveal {
+  opacity: 0;
+  transform: translate3d(0, 28px, 0);
+  transition: opacity 0.9s var(--ease) var(--rd, 0s), transform 1.1s var(--ease) var(--rd, 0s);
+}
+.reveal.is-in {
+  opacity: 1;
+  transform: none;
+}
+
+/* ---------- Hero line mask reveal ---------- */
+.mask {
+  display: block;
+  overflow: hidden;
+  padding-bottom: 0.08em;
+}
+.mask > span {
+  display: block;
+  transform: translate3d(0, 110%, 0);
+  animation: rise 1.3s var(--ease) var(--rd, 0.1s) forwards;
+}
+@keyframes rise {
+  to {
+    transform: none;
+  }
+}
+.fade-up {
+  opacity: 0;
+  animation: fadeUp 1s var(--ease) var(--rd, 0.6s) forwards;
+}
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 18px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* =====================================================
+   FLOATING FOOD  (see menu-floating-food-animation-brief.md)
+   3 independent layers so transforms never fight:
+   .food       -> position + parallax (scroll / pointer)
+   .food__in   -> entrance (fade / scale / translate / rotate)
+   .food__art  -> idle float (a few px, alternating)
+   ===================================================== */
+.food-field {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+}
+.food {
+  position: absolute;
+  left: var(--l);
+  top: var(--t);
+  width: var(--w);
+  aspect-ratio: 1;
+  transform: translate3d(
+    calc(var(--mx, 0) * var(--depth, 14) * 1px),
+    calc((var(--my, 0) * 0.6 + var(--py, 0)) * var(--depth, 14) * 1px),
+    0
+  );
+  transition: transform 0.5s var(--ease);
+}
+.food__in {
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  transform: translate3d(var(--fx, 0px), var(--fy, 30px), 0) scale(var(--fs, 0.8))
+    rotate(calc(var(--r, 0deg) - 5deg));
+  transition: opacity 0.9s var(--ease) var(--d, 0s), transform 1.1s var(--ease) var(--d, 0s);
+  will-change: transform, opacity;
+}
+.is-in .food__in {
+  opacity: 1;
+  transform: translate3d(0, 0, 0) scale(1) rotate(var(--r, 0deg));
+}
+.food__art {
+  width: 100%;
+  height: 100%;
+  filter: drop-shadow(0 22px 22px rgba(18, 22, 10, 0.32));
+}
+.is-in .food__art {
+  animation: float var(--fd, 4.6s) ease-in-out calc(var(--d, 0s) + 1.1s) infinite alternate;
+}
+@keyframes float {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(0, -7px, 0);
+  }
+}
+
+@media (max-width: 1023px) {
+  .food {
+    width: calc(var(--w) * 0.82);
+  }
+}
+@media (max-width: 767px) {
+  .food {
+    left: var(--ml, var(--l));
+    top: var(--mt, var(--t));
+    width: var(--mw, var(--w));
+  }
+  .food--nm {
+    display: none;
+  }
+  .is-in .food__art {
+    animation-duration: 6s;
+  }
+}
+
+/* ---------- Showcase rows ---------- */
+.row-title .ch {
+  display: inline-block;
+  transition: transform 0.7s var(--ease), color 0.5s ease;
+  transition-delay: calc(var(--i) * 28ms);
+}
+.showcase-row:hover .row-title .ch {
+  transform: translate3d(0, -0.07em, 0);
+  color: var(--color-saffron);
+}
+.showcase-row .rule {
+  transform-origin: left;
+  transform: scaleX(0);
+  transition: transform 1.4s var(--ease);
+}
+.showcase-row.is-in .rule {
+  transform: scaleX(1);
+}
+
+/* ---------- Buttons & links ---------- */
+.btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  overflow: hidden;
+  border-radius: 999px;
+  padding: 0.95rem 1.75rem;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  isolation: isolate;
+  transition: color 0.5s var(--ease), border-color 0.5s var(--ease), transform 0.4s var(--ease);
+}
+.btn::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--fill, var(--color-ivory));
+  transform: translate3d(0, 101%, 0);
+  border-radius: 50% 50% 0 0 / 100% 100% 0 0;
+  transition: transform 0.6s var(--ease), border-radius 0.6s var(--ease);
+}
+.btn:hover::before {
+  transform: translate3d(0, 0, 0);
+  border-radius: 0;
+}
+.btn .arrow {
+  display: inline-block;
+  transition: transform 0.5s var(--ease);
+}
+.btn:hover .arrow {
+  transform: translate3d(5px, 0, 0);
+}
+.btn-ghost {
+  border: 1px solid color-mix(in srgb, var(--color-ivory) 55%, transparent);
+  color: var(--color-ivory);
+  --fill: var(--color-ivory);
+}
+.btn-ghost:hover {
+  color: var(--color-olive-deep);
+  border-color: var(--color-ivory);
+}
+.btn-solid {
+  background: var(--color-saffron);
+  color: var(--color-ink);
+  --fill: var(--color-ivory);
+}
+.btn-dark {
+  border: 1px solid var(--color-ink);
+  color: var(--color-ink);
+  --fill: var(--color-ink);
+}
+.btn-dark:hover {
+  color: var(--color-ivory);
+}
+
+.link-u {
+  position: relative;
+  display: inline-block;
+}
+.link-u::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -4px;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.6s var(--ease);
+}
+.link-u:hover::after,
+.link-u[aria-current="true"]::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+/* ---------- Marquee ---------- */
+.marquee {
+  display: flex;
+  width: max-content;
+  animation: marquee 38s linear infinite;
+}
+.marquee:hover {
+  animation-play-state: paused;
+}
+@keyframes marquee {
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+/* ---------- Menu list ---------- */
+.menu-list > li {
+  opacity: 0;
+  animation: fadeUp 0.8s var(--ease) calc(var(--i) * 45ms) forwards;
+}
+.leader {
+  flex: 1;
+  min-width: 1.5rem;
+  margin: 0 0.6rem;
+  align-self: flex-end;
+  transform: translateY(-0.35em);
+  border-bottom: 1.5px dotted color-mix(in srgb, var(--color-ink) 35%, transparent);
+}
+.menu-row {
+  transition: padding 0.5s var(--ease), background 0.5s ease;
+}
+.menu-row:hover {
+  padding-left: 0.9rem;
+  background: linear-gradient(90deg, color-mix(in srgb, var(--color-saffron) 22%, transparent), transparent 70%);
+}
+.menu-row .add {
+  opacity: 0;
+  transform: scale(0.6) rotate(-90deg);
+  transition: opacity 0.4s ease, transform 0.6s var(--ease), background 0.3s, color 0.3s;
+}
+.menu-row:hover .add,
+.menu-row:focus-within .add {
+  opacity: 1;
+  transform: none;
+}
+@media (hover: none) {
+  .menu-row .add {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ---------- WhatsApp FAB pulse ---------- */
+.pulse::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 999px;
+  background: #25d366;
+  z-index: -1;
+  animation: pulse 2.6s ease-out infinite;
+}
+@keyframes pulse {
+  from {
+    transform: scale(1);
+    opacity: 0.5;
+  }
+  to {
+    transform: scale(1.9);
+    opacity: 0;
+  }
+}
+
+/* ---------- Footer wordmark ---------- */
+.wordmark {
+  background: linear-gradient(90deg, var(--color-saffron), var(--color-saffron)) no-repeat 0 100% / 0% 100%;
+  color: color-mix(in srgb, var(--color-ivory) 14%, transparent);
+  -webkit-background-clip: text;
+  background-clip: text;
+  transition: background-size 1.2s var(--ease), color 1.2s var(--ease);
+}
+.wordmark:hover {
+  background-size: 100% 100%;
+  color: transparent;
+}
+
+/* ---------- Cursor ---------- */
+.cursor-ring {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 95;
+  width: 38px;
+  height: 38px;
+  margin: -19px 0 0 -19px;
+  border: 1px solid var(--color-saffron);
+  border-radius: 999px;
+  pointer-events: none;
+  opacity: 0;
+  mix-blend-mode: difference;
+  transition: width 0.4s var(--ease), height 0.4s var(--ease), margin 0.4s var(--ease), background 0.3s, opacity 0.3s;
+}
+.cursor-ring.is-hover {
+  width: 74px;
+  height: 74px;
+  margin: -37px 0 0 -37px;
+  background: color-mix(in srgb, var(--color-saffron) 35%, transparent);
+}
+
+/* ---------- Reduced motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .food,
+  .food__in,
+  .reveal,
+  .btn::before,
+  .showcase-row .rule,
+  .row-title .ch {
+    transition: none !important;
+  }
+  .food__in {
+    opacity: 1 !important;
+    transform: rotate(var(--r, 0deg)) !important;
+  }
+  .food {
+    transform: none !important;
+  }
+  .food__art,
+  .is-in .food__art,
+  .marquee,
+  .pulse::before {
+    animation: none !important;
+  }
+  .reveal,
+  .mask > span,
+  .fade-up,
+  .menu-list > li {
+    opacity: 1 !important;
+    transform: none !important;
+    animation: none !important;
+  }
+  .showcase-row .rule {
+    transform: scaleX(1) !important;
+  }
+}
+
+@keyframes scrollcue {
+  from {
+    transform: translateY(-100%);
+  }
+  to {
+    transform: translateY(200%);
+  }
 }

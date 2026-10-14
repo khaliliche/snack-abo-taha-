@@ -1,27 +1,66 @@
 import { site } from "@/data/site";
+import { menu } from "@/data/menu";
+import Reveal from "@/components/Reveal";
+import Counter from "@/components/Counter";
+import FoodArt, { type FoodKind } from "@/components/Food";
 
-const points = [
-  { icon: "🥙", title: "Fait maison", text: "Des recettes préparées chaque jour sur place." },
-  { icon: "🌿", title: "Produits frais", text: "Des ingrédients choisis avec soin, sans compromis." },
-  { icon: "⚡", title: "Service rapide", text: "Sur place, à emporter ou par WhatsApp." },
+const points: { kind: FoodKind; title: string; text: string }[] = [
+  { kind: "burger", title: "Fait maison", text: "Des recettes préparées chaque jour sur place, du pain aux sauces." },
+  { kind: "leaf", title: "Produits frais", text: "Des ingrédients choisis avec soin, sans compromis sur le goût." },
+  { kind: "fries", title: "Service rapide", text: "Sur place, à emporter ou par WhatsApp — votre faim n'attend pas." },
 ];
 
 export default function About() {
+  const dishes = menu.reduce((n, c) => n + c.items.length, 0);
+
   return (
-    <section id="apropos" className="mx-auto max-w-6xl px-5 py-24">
-      <div className="mx-auto max-w-2xl text-center">
-        <p className="text-sm uppercase tracking-[0.3em] text-gold">Notre histoire</p>
-        <h2 className="mt-3 font-serif text-4xl font-bold text-brand">À propos de nous</h2>
-        <p className="mt-6 text-lg leading-relaxed text-neutral-700">{site.description}</p>
+    <section id="apropos" className="relative bg-paper px-5 py-[clamp(6rem,12vw,11rem)] md:px-10">
+      <div className="mx-auto grid max-w-7xl gap-14 lg:grid-cols-12">
+        <div className="lg:col-span-7">
+          <Reveal>
+            <p className="text-[0.7rem] font-semibold uppercase tracking-[0.4em] text-harissa">01 — Notre histoire</p>
+          </Reveal>
+          <Reveal delay={0.1}>
+            <h2 className="mt-6 font-serif text-[clamp(3rem,8vw,7.5rem)] font-light leading-[0.95] text-olive-deep">
+              Une cuisine de rue,
+              <br />
+              <em className="text-harissa">faite maison.</em>
+            </h2>
+          </Reveal>
+        </div>
+        <div className="flex flex-col justify-end lg:col-span-5">
+          <Reveal delay={0.2}>
+            <p className="text-lg leading-relaxed text-ink/75">{site.description}</p>
+          </Reveal>
+          <Reveal delay={0.3} className="mt-10 flex gap-12 border-t border-ink/15 pt-8">
+            <div>
+              <p className="font-serif text-6xl font-light text-olive-deep">
+                <Counter to={dishes} suffix="+" />
+              </p>
+              <p className="mt-1 text-[0.65rem] font-semibold uppercase tracking-[0.3em] text-ink/55">Plats à la carte</p>
+            </div>
+            <div>
+              <p className="font-serif text-6xl font-light text-olive-deep">
+                <Counter to={menu.length} />
+              </p>
+              <p className="mt-1 text-[0.65rem] font-semibold uppercase tracking-[0.3em] text-ink/55">Univers gourmands</p>
+            </div>
+          </Reveal>
+        </div>
       </div>
 
-      <div className="mt-14 grid gap-6 md:grid-cols-3">
-        {points.map((p) => (
-          <div key={p.title} className="rounded-2xl bg-white p-8 text-center shadow-sm">
-            <div className="text-4xl">{p.icon}</div>
-            <h3 className="mt-4 font-serif text-xl font-bold text-brand">{p.title}</h3>
-            <p className="mt-2 text-neutral-600">{p.text}</p>
-          </div>
+      <div className="mx-auto mt-24 grid max-w-7xl gap-5 md:grid-cols-3">
+        {points.map((p, i) => (
+          <Reveal key={p.title} delay={i * 0.12}>
+            <article className="group relative h-full overflow-hidden rounded-[2rem] border border-ink/10 bg-sand/50 p-9 transition-colors duration-700 hover:bg-olive-deep hover:text-ivory">
+              <span className="font-serif text-sm italic text-harissa transition-colors duration-700 group-hover:text-saffron">0{i + 1}</span>
+              <div className="my-8 h-28 w-28 transition-transform duration-700 [transition-timing-function:var(--ease)] group-hover:-translate-y-2 group-hover:rotate-[-8deg] group-hover:scale-110">
+                <FoodArt kind={p.kind} />
+              </div>
+              <h3 className="font-serif text-3xl font-medium">{p.title}</h3>
+              <p className="mt-3 leading-relaxed opacity-70">{p.text}</p>
+            </article>
+          </Reveal>
         ))}
       </div>
     </section>
