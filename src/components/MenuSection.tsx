@@ -2,13 +2,14 @@
 
 import { useEffect, useState } from "react";
 import { menu } from "@/data/menu";
-import { whatsappLink } from "@/data/site";
 import Reveal from "@/components/Reveal";
+import { useCart } from "@/components/CartProvider";
 import { vars } from "@/lib/css";
 
 export default function MenuSection() {
   const [active, setActive] = useState(menu[0].id);
   const category = menu.find((c) => c.id === active) ?? menu[0];
+  const { add } = useCart();
 
   // Opened from the showcase CTAs
   useEffect(() => {
@@ -98,29 +99,31 @@ export default function MenuSection() {
                       <span className="leader hidden sm:block" aria-hidden />
                       <div className="ml-auto flex shrink-0 items-center gap-2">
                         {item.price !== undefined && (
-                          <span className="font-serif text-2xl font-semibold text-harissa">
-                            {item.price}
-                            <small className="ml-1 text-xs font-sans font-semibold tracking-widest text-ink/50">DH</small>
-                          </span>
+                          <>
+                            <span className="font-serif text-2xl font-semibold text-harissa">
+                              {item.price}
+                              <small className="ml-1 text-xs font-sans font-semibold tracking-widest text-ink/50">DH</small>
+                            </span>
+                            <button
+                              onClick={() => add(item.name, item.price as number)}
+                              aria-label={`Ajouter ${item.name} au panier`}
+                              className="add ml-1 flex h-10 w-10 items-center justify-center sm:h-8 sm:w-8 rounded-full bg-olive-deep text-lg leading-none text-ivory hover:bg-saffron hover:text-ink"
+                            >
+                              +
+                            </button>
+                          </>
                         )}
                         {item.prices?.map((p) => (
-                          <span
+                          <button
                             key={p.label}
-                            className="rounded-full border border-ink/15 px-2.5 py-0.5 text-sm font-semibold text-olive-deep"
+                            onClick={() => add(`${item.name} (${p.label})`, p.value)}
+                            aria-label={`Ajouter ${item.name} ${p.label} au panier`}
+                            className="rounded-full border border-ink/15 px-3 py-1.5 text-sm font-semibold text-olive-deep transition-colors hover:border-saffron hover:bg-saffron hover:text-ink"
                           >
                             <span className="mr-1 text-[0.65rem] uppercase tracking-wider text-ink/45">{p.label}</span>
                             {p.value}
-                          </span>
+                          </button>
                         ))}
-                        <a
-                          href={whatsappLink(`Bonjour, je souhaite commander : ${item.name}`)}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          aria-label={`Commander ${item.name} sur WhatsApp`}
-                          className="add ml-1 flex h-10 w-10 items-center justify-center sm:h-8 sm:w-8 rounded-full bg-olive-deep text-lg leading-none text-ivory hover:bg-saffron hover:text-ink"
-                        >
-                          +
-                        </a>
                       </div>
                     </div>
                     {item.description && (
@@ -129,7 +132,7 @@ export default function MenuSection() {
                   </li>
                 ))}
               </ul>
-              <p className="mt-8 text-xs uppercase tracking-[0.3em] text-ink/40">Prix en dirhams (DH)</p>
+              <p className="mt-8 text-xs uppercase tracking-[0.3em] text-ink/40">Prix en dirhams (DH) · Touchez + pour ajouter au panier</p>
             </div>
           </div>
         </div>

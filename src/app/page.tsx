@@ -7,10 +7,12 @@ import MenuSection from "@/components/MenuSection";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
+import CartProvider from "@/components/CartProvider";
+import CartBar from "@/components/CartBar";
 
 export default function Home() {
   return (
-    <>
+    <CartProvider>
       <Navbar />
       <main>
         <Hero />
@@ -21,7 +23,8 @@ export default function Home() {
         <Contact />
       </main>
       <Footer />
+      <CartBar />
       <WhatsAppButton />
-    </>
+    </CartProvider>
   );
 }
