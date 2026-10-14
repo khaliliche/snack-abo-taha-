@@ -171,7 +171,29 @@ const art: Record<FoodKind, () => ReactNode> = {
   ),
 };
 
+const photos: Partial<Record<FoodKind, string>> = {
+  pizza: "/images/food/pizza.webp",
+  burger: "/images/food/burger.webp",
+  tacos: "/images/food/tacos.webp",
+  juice: "/images/food/juice.webp",
+};
+
 export default function FoodArt({ kind }: { kind: FoodKind }) {
+  const photo = photos[kind];
+  if (photo) {
+    return (
+      // eslint-disable-next-line @next/next/no-img-element
+      <img
+        src={photo}
+        alt=""
+        width={720}
+        height={720}
+        decoding="async"
+        draggable={false}
+        style={{ width: "100%", height: "100%", objectFit: "contain" }}
+      />
+    );
+  }
   return (
     <svg viewBox="0 0 200 200" width="100%" height="100%" aria-hidden="true" focusable="false">
       {art[kind]()}

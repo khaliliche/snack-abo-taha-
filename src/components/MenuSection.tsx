@@ -35,7 +35,7 @@ export default function MenuSection() {
         <div className="mt-14 grid gap-10 lg:grid-cols-12 lg:gap-16">
           {/* Category selector: sticky list on desktop, scrolling pills on mobile */}
           <div className="lg:col-span-4">
-            <div className="sticky top-16 z-20 -mx-5 overflow-x-auto bg-paper/90 px-5 py-3 backdrop-blur lg:top-28 lg:mx-0 lg:overflow-visible lg:bg-transparent lg:p-0 lg:backdrop-blur-none">
+            <div className="sticky top-16 z-20 -mx-5 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden bg-paper/90 px-5 py-3 backdrop-blur lg:top-28 lg:mx-0 lg:overflow-visible lg:bg-transparent lg:p-0 lg:backdrop-blur-none">
               <ul className="flex gap-2 lg:flex-col lg:gap-0" role="tablist" aria-label="Catégories du menu">
                 {menu.map((c, i) => {
                   const on = c.id === active;
@@ -44,8 +44,8 @@ export default function MenuSection() {
                       <button
                         role="tab"
                         aria-selected={on}
-                        onClick={() => setActive(c.id)}
-                        className={`group flex items-baseline gap-4 whitespace-nowrap rounded-full border px-5 py-2 text-sm font-semibold transition-all duration-500 lg:w-full lg:rounded-none lg:border-0 lg:border-b lg:border-ink/10 lg:bg-transparent lg:px-0 lg:py-3 ${
+                        onClick={() => { setActive(c.id); if (window.innerWidth < 1024) document.getElementById("menu-items")?.scrollIntoView({ behavior: "smooth", block: "start" }); }}
+                        className={`group flex items-baseline gap-4 whitespace-nowrap rounded-full border px-5 py-3 text-sm font-semibold transition-all duration-500 lg:w-full lg:rounded-none lg:border-0 lg:border-b lg:border-ink/10 lg:bg-transparent lg:px-0 lg:py-3 ${
                           on
                             ? "border-olive-deep bg-olive-deep text-ivory lg:text-harissa"
                             : "border-ink/15 text-ink/70 hover:border-olive-deep lg:text-ink/50 lg:hover:text-olive-deep"
@@ -69,7 +69,7 @@ export default function MenuSection() {
           </div>
 
           {/* Items */}
-          <div className="lg:col-span-8">
+          <div id="menu-items" className="scroll-mt-32 lg:col-span-8">
             <div key={active}>
               <div className="flex items-end justify-between gap-4 border-b-2 border-olive-deep pb-4">
                 <h3 className="menu-title font-serif text-[clamp(2.6rem,6vw,5rem)] font-light leading-none text-olive-deep">
@@ -88,15 +88,15 @@ export default function MenuSection() {
                     className="menu-row border-b border-ink/10 py-5"
                     style={vars({ "--i": i })}
                   >
-                    <div className="flex items-end">
+                    <div className="flex flex-wrap items-end gap-y-2">
                       <p className="font-serif text-xl font-medium text-ink md:text-2xl">{item.name}</p>
                       {item.signature && (
                         <span className="mb-1 ml-3 rounded-full bg-saffron px-2.5 py-0.5 text-[0.6rem] font-bold uppercase tracking-[0.2em] text-ink">
                           Spécialité
                         </span>
                       )}
-                      <span className="leader" aria-hidden />
-                      <div className="flex shrink-0 items-center gap-2">
+                      <span className="leader hidden sm:block" aria-hidden />
+                      <div className="ml-auto flex shrink-0 items-center gap-2">
                         {item.price !== undefined && (
                           <span className="font-serif text-2xl font-semibold text-harissa">
                             {item.price}
@@ -117,7 +117,7 @@ export default function MenuSection() {
                           target="_blank"
                           rel="noopener noreferrer"
                           aria-label={`Commander ${item.name} sur WhatsApp`}
-                          className="add ml-1 flex h-8 w-8 items-center justify-center rounded-full bg-olive-deep text-lg leading-none text-ivory hover:bg-saffron hover:text-ink"
+                          className="add ml-1 flex h-10 w-10 items-center justify-center sm:h-8 sm:w-8 rounded-full bg-olive-deep text-lg leading-none text-ivory hover:bg-saffron hover:text-ink"
                         >
                           +
                         </a>

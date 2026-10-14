@@ -4,10 +4,10 @@ export const site = {
   description:
     "Snack Abo Taha vous propose tacos, pizzas, burgers, chawarma, sandwichs, tajines, poulet et jus frais. Sur place, à emporter ou par WhatsApp.",
   phones: ["06 61 69 50 57", "06 97 05 84 29"],
-  whatsapp: "212661695057", // À VÉRIFIER : numéro WhatsApp, format international sans + ni espaces
+  whatsapp: "212697058429",
   email: "",
   address: "Votre adresse ici",
-  hours: "Horaires à compléter",
+  hours: "Tous les jours : 11h00 à minuit",
   mapEmbed: "",
   mapLink: "https://maps.app.goo.gl/urGXkunJ7JrFHqZ7A?g_st=iw",
   socials: {

@@ -426,3 +426,19 @@ body::after {
     transform: translateY(200%);
   }
 }
+
+/* ---------- Mobile polish ---------- */
+html {
+  -webkit-tap-highlight-color: transparent;
+}
+@media (max-width: 767px), (hover: none) {
+  body::after {
+    display: none; /* grain overlay is heavy on phones */
+  }
+}
+@media (hover: none) {
+  .menu-row:hover {
+    padding-left: 0;
+    background: none;
+  }
+}
