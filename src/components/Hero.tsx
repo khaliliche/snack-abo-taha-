@@ -1,5 +1,7 @@
+import Link from "next/link";
 import { site, whatsappLink } from "@/data/site";
 import FoodField from "@/components/FoodField";
+import OpenNow from "@/components/OpenNow";
 import { heroFoods } from "@/data/showcase";
 import { vars } from "@/lib/css";
 
@@ -8,7 +10,7 @@ export default function Hero() {
     <section
       id="accueil"
       data-food-host
-      className="relative flex min-h-[100svh] items-center justify-center overflow-x-clip bg-olive-deep px-5 pb-20 pt-28 text-center text-ivory"
+      className="relative flex min-h-[100svh] items-center justify-center overflow-x-clip bg-olive-deep px-5 pb-28 pt-28 text-center text-ivory"
     >
       {/* atmosphere */}
       <div
@@ -37,17 +39,26 @@ export default function Hero() {
           {site.tagline}.
         </p>
         <div className="fade-up mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row" style={vars({ "--rd": "1.2s" })}>
-          <a href="#menu" className="btn btn-solid">
+          <Link href="/menu" className="btn btn-solid">
             Explorer le menu <span className="arrow">→</span>
-          </a>
+          </Link>
           <a href={whatsappLink()} target="_blank" rel="noopener noreferrer" className="btn btn-ghost">
             Commander sur WhatsApp
           </a>
         </div>
+        <div
+          className="fade-up mt-9 flex flex-col items-center gap-3 text-[0.68rem] font-medium uppercase tracking-[0.25em] text-ivory/70"
+          style={vars({ "--rd": "1.4s" })}
+        >
+          <OpenNow />
+          <p>
+            Sur place <span className="mx-2 text-saffron">✦</span> À emporter <span className="mx-2 text-saffron">✦</span> Livraison
+          </p>
+        </div>
       </div>
 
       <a
-        href="#apropos"
+        href="#specialites"
         aria-label="Défiler vers la suite"
         className="fade-up absolute bottom-7 left-1/2 flex -translate-x-1/2 flex-col items-center gap-3 text-[0.6rem] uppercase tracking-[0.4em] text-ivory/60"
         style={vars({ "--rd": "1.6s" })}

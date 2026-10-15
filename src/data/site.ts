@@ -8,6 +8,8 @@ export const site = {
   email: "",
   address: "Votre adresse ici",
   hours: "Tous les jours : 11h00 à minuit",
+  /** Heure d'ouverture (0-23) ; fermeture à minuit. Sert au badge « Ouvert maintenant ». */
+  openHour: 11,
   mapEmbed: "",
   mapLink: "https://maps.app.goo.gl/urGXkunJ7JrFHqZ7A?g_st=iw",
   socials: {
@@ -19,4 +21,9 @@ export const site = {
 
 export function whatsappLink(message = "Bonjour, je souhaite passer une commande.") {
   return `https://wa.me/${site.whatsapp}?text=${encodeURIComponent(message)}`;
+}
+
+/** "06 61 69 50 57" -> "tel:+212661695057" */
+export function telHref(phone: string) {
+  return `tel:+212${phone.replace(/\D/g, "").replace(/^0/, "")}`;
 }

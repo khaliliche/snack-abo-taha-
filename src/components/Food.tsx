@@ -10,7 +10,13 @@ export type FoodKind =
   | "avocado"
   | "tajine"
   | "leaf"
-  | "chili";
+  | "chili"
+  | "tomato"
+  | "cheese"
+  | "onion"
+  | "olive"
+  | "egg"
+  | "shawarma";
 
 const seeds: [number, number, number][] = [
   [70, 56, -20],
@@ -20,7 +26,7 @@ const seeds: [number, number, number][] = [
   [118, 72, -30],
 ];
 
-const art: Record<FoodKind, () => ReactNode> = {
+const art: Record<Exclude<FoodKind, "shawarma">, () => ReactNode> = {
   pizza: () => (
     <g>
       <circle cx="100" cy="100" r="94" fill="#c98428" />
@@ -169,19 +175,71 @@ const art: Record<FoodKind, () => ReactNode> = {
       <path d="M44 66 q-14 -12 -4 -30" stroke="#4d7a2a" strokeWidth="9" strokeLinecap="round" fill="none" />
     </g>
   ),
+  tomato: () => (
+    <g>
+      <circle cx="100" cy="112" r="74" fill="#c43a22" />
+      <circle cx="78" cy="88" r="16" fill="#e0583a" opacity=".7" />
+      <path d="M100 44 L112 62 L134 54 L124 74 L146 84 L122 90 L126 112 L100 98 L74 112 L78 90 L54 84 L76 74 L66 54 L88 62Z" fill="#4f7d2a" />
+    </g>
+  ),
+  cheese: () => (
+    <g>
+      <path d="M20 150 L180 150 L180 110 Q120 100 20 60Z" fill="#f2b92c" />
+      <path d="M20 60 L180 110 L180 118 L20 68Z" fill="#f7d36a" />
+      <circle cx="62" cy="124" r="11" fill="#d9981c" />
+      <circle cx="112" cy="132" r="8" fill="#d9981c" />
+      <circle cx="146" cy="122" r="6" fill="#d9981c" />
+    </g>
+  ),
+  onion: () => (
+    <g>
+      <circle cx="100" cy="100" r="82" fill="#a4357a" />
+      <circle cx="100" cy="100" r="70" fill="#f3e6ef" />
+      <circle cx="100" cy="100" r="56" fill="none" stroke="#c77aa6" strokeWidth="5" />
+      <circle cx="100" cy="100" r="40" fill="none" stroke="#c77aa6" strokeWidth="5" />
+      <circle cx="100" cy="100" r="22" fill="none" stroke="#c77aa6" strokeWidth="5" />
+    </g>
+  ),
+  olive: () => (
+    <g>
+      <ellipse cx="100" cy="100" rx="62" ry="78" fill="#2d3a1a" transform="rotate(25 100 100)" />
+      <ellipse cx="82" cy="76" rx="12" ry="22" fill="#4c5f2c" opacity=".7" transform="rotate(25 82 76)" />
+      <circle cx="112" cy="132" r="16" fill="#c43a22" />
+    </g>
+  ),
+  egg: () => (
+    <g>
+      <path d="M40 104 C28 56 80 30 126 40 C176 52 178 112 150 144 C122 176 62 168 40 104Z" fill="#f7f1e1" />
+      <circle cx="104" cy="100" r="30" fill="#f2b92c" />
+      <circle cx="94" cy="90" r="9" fill="#f9d56a" opacity=".8" />
+    </g>
+  ),
 };
 
-const photos: Partial<Record<FoodKind, string>> = {
+/**
+ * PHOTOS RÉELLES (WebP détourés, fond transparent, 720x720).
+ * Pour remplacer une illustration : déposez le fichier dans /public/images/food/
+ * puis décommentez / ajoutez sa ligne ci-dessous. Tant qu'une ligne manque,
+ * l'illustration SVG sert de secours (le site ne casse jamais).
+ */
+export const photos: Partial<Record<FoodKind, string>> = {
   pizza: "/images/food/pizza.webp",
   burger: "/images/food/burger.webp",
   tacos: "/images/food/tacos.webp",
   juice: "/images/food/juice.webp",
+  fries: "/images/food/frites.webp",
+  tajine: "/images/food/tajine.webp",
+  shawarma: "/images/food/shawarma.webp",
+  orange: "/images/food/orange.webp",
+  avocado: "/images/food/avocado.webp",
+  chili: "/images/food/chili.webp",
   leaf: "/images/food/leaf.webp",
-  fries: "/images/food/fries.webp",
 };
 
-export default function FoodArt({ kind }: { kind: FoodKind }) {
-  const photo = photos[kind];
+type Props = { kind: FoodKind; priority?: boolean; sizes?: string; /** Photo spécifique (remplace la photo/illustration par défaut du `kind`) */ src?: string };
+
+export default function FoodArt({ kind, priority = false, sizes, src }: Props) {
+  const photo = src ?? photos[kind];
   if (photo) {
     return (
       // eslint-disable-next-line @next/next/no-img-element
@@ -190,6 +248,9 @@ export default function FoodArt({ kind }: { kind: FoodKind }) {
         alt=""
         width={720}
         height={720}
+        sizes={sizes}
+        loading={priority ? "eager" : "lazy"}
+        fetchPriority={priority ? "high" : "low"}
         decoding="async"
         draggable={false}
         style={{ width: "100%", height: "100%", objectFit: "contain" }}
@@ -198,7 +259,7 @@ export default function FoodArt({ kind }: { kind: FoodKind }) {
   }
   return (
     <svg viewBox="0 0 200 200" width="100%" height="100%" aria-hidden="true" focusable="false">
-      {art[kind]()}
+      {kind === "shawarma" ? art.tacos() : art[kind]()}
     </svg>
   );
 }

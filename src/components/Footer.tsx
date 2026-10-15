@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { site } from "@/data/site";
 
 export default function Footer() {
@@ -16,13 +17,13 @@ export default function Footer() {
           </p>
           <div className="flex gap-16 text-sm">
             <ul className="space-y-2">
-              {["Accueil:#accueil", "À propos:#apropos", "Menu:#menu", "Contact:#contact"].map((l) => {
+              {["Accueil:/", "À propos:/a-propos", "Menu:/menu", "Contact:/contact"].map((l) => {
                 const [label, href] = l.split(":");
                 return (
                   <li key={href}>
-                    <a href={href} className="link-u transition-colors hover:text-saffron">
+                    <Link href={href} className="link-u transition-colors hover:text-saffron">
                       {label}
-                    </a>
+                    </Link>
                   </li>
                 );
               })}
