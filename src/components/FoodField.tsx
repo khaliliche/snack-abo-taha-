@@ -37,8 +37,8 @@ type Props = {
 };
 
 /**
- * Decorative, data-driven floating food. Entrance fires once at ~25% visibility,
- * idle float starts after settling, scroll/pointer parallax lives on a separate layer.
+ * Decorative, data-driven floating food. Entrance fires once at ~25% visibility.
+ * Scroll parallax is desktop-only and only runs while the field is near the viewport.
  * Respects prefers-reduced-motion (final state, no motion).
  */
 export default function FoodField({ foods, immediate = false, pointer = false, className = "" }: Props) {
@@ -47,7 +47,6 @@ export default function FoodField({ foods, immediate = false, pointer = false, c
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
-    // The nearest .showcase-row (if any) also gets .is-in so rules/titles can react.
     const host = el.closest<HTMLElement>("[data-food-host]") ?? el;
     const targets = host === el ? [el] : [el, host];
     const reveal = () => targets.forEach((t) => t.classList.add("is-in"));
@@ -57,6 +56,8 @@ export default function FoodField({ foods, immediate = false, pointer = false, c
       reveal();
       return;
     }
+
+    const touch = window.matchMedia("(hover: none)").matches;
 
     let io: IntersectionObserver | undefined;
     let timer = 0;
@@ -75,7 +76,7 @@ export default function FoodField({ foods, immediate = false, pointer = false, c
       io.observe(host);
     }
 
-    // Scroll parallax: interpolates between the authored layout and a slight drift.
+    let visible = true;
     let raf = 0;
     const update = () => {
       raf = 0;
@@ -85,11 +86,26 @@ export default function FoodField({ foods, immediate = false, pointer = false, c
       el.style.setProperty("--py", String(Math.max(-1, Math.min(1, p))));
     };
     const onScroll = () => {
-      if (!raf) raf = requestAnimationFrame(update);
+      if (!visible || raf) return;
+      raf = requestAnimationFrame(update);
     };
-    update();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", onScroll);
+
+    // Pause idle float + parallax while the field is far from the viewport
+    const vio = new IntersectionObserver(
+      ([entry]) => {
+        visible = entry.isIntersecting;
+        el.classList.toggle("is-off", !visible);
+        if (visible && !touch) update();
+      },
+      { rootMargin: "120px 0px" }
+    );
+    vio.observe(host);
+
+    if (!touch) {
+      update();
+      window.addEventListener("scroll", onScroll, { passive: true });
+      window.addEventListener("resize", onScroll);
+    }
 
     // Pointer parallax (desktop only)
     let onMove: ((e: PointerEvent) => void) | undefined;
@@ -108,6 +124,7 @@ export default function FoodField({ foods, immediate = false, pointer = false, c
 
     return () => {
       io?.disconnect();
+      vio.disconnect();
       window.clearTimeout(timer);
       if (raf) cancelAnimationFrame(raf);
       window.removeEventListener("scroll", onScroll);
@@ -138,7 +155,7 @@ export default function FoodField({ foods, immediate = false, pointer = false, c
           <div key={`${f.kind}-${i}`} className={`food ${f.m === false ? "food--nm" : ""}`} style={style}>
             <div className="food__in">
               <div className="food__art">
-                <FoodArt kind={f.kind} priority={immediate && i < 2} />
+                <FoodArt kind={f.kind} />
               </div>
             </div>
           </div>

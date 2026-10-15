@@ -37,7 +37,7 @@ body {
 }
 
 section[id] {
-  scroll-margin-top: 3rem;
+  scroll-margin-top: 4.5rem;
 }
 
 /* ---------- Film grain over everything ---------- */
@@ -547,4 +547,46 @@ html.is-loading .page-enter {
     opacity: 0;
     transform: translate3d(0, -8px, 0);
   }
+}
+
+/* ---------- Keep footer text clear of the fixed cart bar / WhatsApp / offers pill ---------- */
+@media (max-width: 767px) {
+  footer {
+    padding-bottom: calc(10rem + env(safe-area-inset-bottom));
+  }
+}
+
+/* ---------- Touch feedback ---------- */
+@keyframes cart-bump {
+  0% { transform: scale(1); }
+  40% { transform: scale(1.07); }
+  100% { transform: scale(1); }
+}
+.cart-bump { animation: cart-bump 0.35s var(--ease); }
+@media (hover: none) {
+  button:not(.btn):not(:disabled):active { transform: scale(0.94); transition: transform 0.1s ease; }
+  .btn:active { transform: scale(0.96); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .cart-bump { animation: none; }
+}
+
+/* ---------- Floating food: lighter on phones, paused offscreen ---------- */
+.food-field.is-off .food__art { animation-play-state: paused; }
+@media (max-width: 767px), (hover: none) {
+  .food { transition: none; }
+  .food__in { will-change: auto; }
+  .is-in .food__art { animation: none; }
+}
+
+/* ---------- Failsafe: never leave content hidden if JS is slow or blocked ---------- */
+.reveal-all .reveal { opacity: 1; transform: none; }
+.reveal-all .food__in { opacity: 1; transform: rotate(var(--r, 0deg)); }
+
+/* ---------- Floating food: lighter on phones, paused offscreen ---------- */
+.food-field.is-off .food__art { animation-play-state: paused; }
+@media (max-width: 767px), (hover: none) {
+  .food { transition: none; }
+  .food__in { will-change: auto; }
+  .is-in .food__art { animation: none; }
 }

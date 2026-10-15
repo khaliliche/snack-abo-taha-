@@ -1,8 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useState, type FocusEvent } from "react";
 import { useCart } from "@/components/CartProvider";
 import { whatsappLink } from "@/data/site";
+import { useScrollLock } from "@/lib/scrollLock";
 
 const MODES = ["À emporter", "Sur place", "Livraison"];
 
@@ -11,6 +12,8 @@ export default function CartBar() {
   const [name, setName] = useState("");
   const [mode, setMode] = useState(MODES[0]);
   const [address, setAddress] = useState("");
+
+  useScrollLock(open && count > 0);
 
   if (count === 0) return null;
 
@@ -26,38 +29,44 @@ export default function CartBar() {
     ...(needsAddress ? [`Adresse : ${address.trim()}`] : []),
   ].join("\n");
 
+  // Keep the focused field visible once the on-screen keyboard has opened
+  const keepVisible = (e: FocusEvent<HTMLInputElement>) => {
+    const el = e.currentTarget;
+    setTimeout(() => el.scrollIntoView({ block: "center", behavior: "smooth" }), 300);
+  };
+
   return (
     <>
       <button
-        onClick={() => setOpen(true)}
-        className="fixed bottom-[max(1.25rem,env(safe-area-inset-bottom))] left-5 right-24 z-50 flex items-center justify-between rounded-full bg-olive-deep px-6 py-4 text-ivory shadow-[0_12px_30px_-8px_rgba(0,0,0,.5)] md:left-1/2 md:right-auto md:w-[26rem] md:-translate-x-1/2"
+        key={count} onClick={() => setOpen(true)}
+        className="fixed bottom-[max(1.25rem,env(safe-area-inset-bottom))] cart-bump left-5 right-24 z-50 flex items-center justify-between gap-3 rounded-full bg-olive-deep px-5 py-4 text-ivory shadow-[0_12px_30px_-8px_rgba(0,0,0,.5)] md:left-1/2 md:right-auto md:w-[26rem] md:-translate-x-1/2 md:px-6"
         aria-label="Ouvrir le panier"
       >
-        <span className="text-sm font-semibold">Mon panier ({count})</span>
-        <span className="font-serif text-xl font-semibold text-saffron">{total} DH</span>
+        <span className="min-w-0 truncate text-sm font-semibold">Mon panier ({count})</span>
+        <span className="shrink-0 whitespace-nowrap font-serif text-lg font-semibold text-saffron sm:text-xl">{total} DH</span>
       </button>
 
       {open && (
         <div className="fixed inset-0 z-[60] flex items-end justify-center bg-ink/60 backdrop-blur-sm md:items-center" onClick={() => setOpen(false)}>
           <div
-            className="max-h-[90svh] w-full max-w-lg overflow-y-auto rounded-t-[2rem] bg-paper p-7 text-ink md:rounded-[2rem]"
+            className="max-h-[90dvh] w-full max-w-lg overflow-y-auto overscroll-contain rounded-t-[2rem] bg-paper p-7 text-ink md:rounded-[2rem]"
             onClick={(e) => e.stopPropagation()}
             role="dialog"
             aria-label="Panier"
           >
             <div className="flex items-center justify-between">
               <h2 className="font-serif text-4xl font-light text-olive-deep">Mon panier</h2>
-              <button onClick={() => setOpen(false)} aria-label="Fermer" className="h-10 w-10 text-2xl">×</button>
+              <button onClick={() => setOpen(false)} aria-label="Fermer" className="h-11 w-11 text-2xl">×</button>
             </div>
 
             <ul className="mt-5 divide-y divide-ink/10">
               {lines.map((l) => (
-                <li key={l.key} className="flex items-center gap-3 py-3">
+                <li key={l.key} className="flex items-center gap-2 py-3">
                   <p className="flex-1 font-serif text-lg font-medium">{l.name}</p>
                   <div className="flex items-center gap-2">
-                    <button onClick={() => dec(l.key)} aria-label="Retirer un" className="h-8 w-8 rounded-full border border-ink/20">−</button>
+                    <button onClick={() => dec(l.key)} aria-label="Retirer un" className="h-11 w-11 rounded-full border border-ink/20">−</button>
                     <span className="w-5 text-center text-sm font-semibold tabular-nums">{l.qty}</span>
-                    <button onClick={() => inc(l.key)} aria-label="Ajouter un" className="h-8 w-8 rounded-full border border-ink/20">+</button>
+                    <button onClick={() => inc(l.key)} aria-label="Ajouter un" className="h-11 w-11 rounded-full border border-ink/20">+</button>
                   </div>
                   <span className="w-16 text-right font-serif text-lg font-semibold text-harissa">{l.qty * l.price} DH</span>
                 </li>
@@ -73,6 +82,7 @@ export default function CartBar() {
               <input
                 value={name}
                 onChange={(e) => setName(e.target.value)}
+                onFocus={keepVisible}
                 placeholder="Votre nom"
                 className="w-full rounded-xl border border-ink/20 bg-ivory px-4 py-3 text-base"
               />
@@ -93,6 +103,7 @@ export default function CartBar() {
                 <input
                   value={address}
                   onChange={(e) => setAddress(e.target.value)}
+                  onFocus={keepVisible}
                   placeholder="Adresse de livraison"
                   className="w-full rounded-xl border border-ink/20 bg-ivory px-4 py-3 text-base"
                 />
@@ -104,7 +115,10 @@ export default function CartBar() {
                 href={whatsappLink(message)}
                 target="_blank"
                 rel="noopener noreferrer"
-                onClick={() => setTimeout(clear, 300)}
+                onClick={() => {
+                  setOpen(false);
+                  setTimeout(clear, 300);
+                }}
                 className="btn btn-solid mt-6 w-full justify-center"
               >
                 Envoyer sur WhatsApp →
@@ -114,7 +128,13 @@ export default function CartBar() {
                 {name.trim() === "" ? "Entrez votre nom" : "Entrez l'adresse"}
               </button>
             )}
-            <button onClick={clear} className="mt-3 w-full text-center text-xs uppercase tracking-[0.25em] text-ink/50">
+            <button
+              onClick={() => {
+                clear();
+                setOpen(false);
+              }}
+              className="mt-3 w-full text-center text-xs uppercase tracking-[0.25em] text-ink/50"
+            >
               Vider le panier
             </button>
           </div>

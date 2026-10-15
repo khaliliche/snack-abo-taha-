@@ -36,7 +36,18 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="fr" className={`${cormorant.variable} ${dmsans.variable}`} suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: loaderBoot }} />
+
+        <noscript>
+          <style>{`.reveal,.food__in{opacity:1!important;transform:none!important}`}</style>
+        </noscript>
+        <script
+          dangerouslySetInnerHTML={{
+            __html:
+              'setTimeout(function(){if(!window.__hydrated)document.documentElement.classList.add("reveal-all")},4000)',
+          }}
+        />
       </head>
+      
       <body>
         <Loader />
         <CartProvider>

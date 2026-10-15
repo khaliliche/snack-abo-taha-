@@ -37,7 +37,7 @@ export default function Showcase() {
                 {row.n} — {row.eyebrow}
               </p>
             </Reveal>
-            <Reveal as="h2" delay={0.1} className="row-title mt-5 font-serif text-[clamp(4rem,13vw,11rem)] font-light leading-[0.9] text-olive-deep">
+            <Reveal as="h2" delay={0.1} className="row-title mt-5 font-serif text-[clamp(3rem,13vw,11rem)] font-light leading-[0.9] text-olive-deep">
               <span className="sr-only">{row.title}</span>
               <Letters text={row.title} />
             </Reveal>

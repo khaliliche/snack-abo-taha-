@@ -240,6 +240,7 @@ type Props = { kind: FoodKind; priority?: boolean; sizes?: string; /** Photo spÃ
 
 export default function FoodArt({ kind, priority = false, sizes, src }: Props) {
   const photo = src ?? photos[kind];
+  const srcSet = photo && photo.startsWith("/images/food/") && photo.endsWith(".webp") ? [360, 540].map((w) => `${photo.replace(/\.webp$/, "")}-${w}.webp ${w}w`).join(", ") + `, ${photo} 720w` : undefined;
   if (photo) {
     return (
       // eslint-disable-next-line @next/next/no-img-element
@@ -248,7 +249,7 @@ export default function FoodArt({ kind, priority = false, sizes, src }: Props) {
         alt=""
         width={720}
         height={720}
-        sizes={sizes}
+        srcSet={srcSet} sizes={srcSet ? (sizes ?? "(max-width: 767px) 50vw, 360px") : sizes}
         loading={priority ? "eager" : "lazy"}
         fetchPriority={priority ? "high" : "low"}
         decoding="async"

@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import Logo from "@/components/Logo";
 import { whatsappLink } from "@/data/site";
+import { useScrollLock } from "@/lib/scrollLock";
 
 const links = [
   { href: "/", label: "Accueil" },
@@ -38,16 +39,12 @@ export default function Navbar() {
     };
   }, [pathname]);
 
-  useEffect(() => {
-    document.body.style.overflow = open ? "hidden" : "";
-    return () => {
-      document.body.style.overflow = "";
-    };
-  }, [open]);
+  useScrollLock(open);
 
   const isActive = (href: string) => (href === "/" ? pathname === "/" : pathname.startsWith(href));
 
   return (
+    <>
     <header
       className={`fixed inset-x-0 top-0 z-40 text-ivory transition-all duration-700 ${
         scrolled || open ? "bg-olive-deep/85 py-3 backdrop-blur-md" : "py-6"
@@ -84,8 +81,14 @@ export default function Navbar() {
         </button>
       </nav>
 
+      
+
+      <div id="progress" className="absolute inset-x-0 bottom-0 h-px origin-left bg-saffron" style={{ transform: "scaleX(0)" }} />
+    </header>
+
+      {/* Mobile menu: outside <header> so its backdrop-blur cannot trap the fixed overlay */}
       <div
-        className={`fixed inset-0 z-40 flex flex-col justify-center bg-olive-deep px-8 transition-[clip-path] duration-700 md:hidden ${
+        className={`fixed inset-0 z-[39] flex text-ivory flex-col justify-center bg-olive-deep px-8 transition-[clip-path] duration-700 md:hidden ${
           open ? "[clip-path:circle(150%_at_90%_5%)]" : "[clip-path:circle(0%_at_90%_5%)]"
         }`}
         aria-hidden={!open}
@@ -113,8 +116,6 @@ export default function Navbar() {
           Commander sur WhatsApp <span className="arrow">→</span>
         </a>
       </div>
-
-      <div id="progress" className="absolute inset-x-0 bottom-0 h-px origin-left bg-saffron" style={{ transform: "scaleX(0)" }} />
-    </header>
+    </>
   );
 }

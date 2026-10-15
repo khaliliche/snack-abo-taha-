@@ -16,6 +16,7 @@ export default function Reveal({
   const ref = useRef<HTMLElement>(null);
 
   useEffect(() => {
+    (window as unknown as { __hydrated?: boolean }).__hydrated = true;
     const el = ref.current;
     if (!el) return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {

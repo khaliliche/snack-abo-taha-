@@ -31,7 +31,7 @@ export default function Hero() {
           <span className="mask text-[clamp(1.6rem,4vw,3rem)] italic text-saffron" style={vars({ "--rd": "0.3s" })}>
             <span>Snack</span>
           </span>
-          <span className="mask text-[clamp(3.6rem,15vw,13.5rem)] uppercase tracking-[0.03em]" style={vars({ "--rd": "0.45s" })}>
+          <span className="mask text-[clamp(3.2rem,15vw,13.5rem)] uppercase tracking-[0.03em]" style={vars({ "--rd": "0.45s" })}>
             <span>Abo Taha</span>
           </span>
         </h1>

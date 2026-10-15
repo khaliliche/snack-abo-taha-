@@ -33,7 +33,7 @@ export default function MenuSection() {
         <div className="grid gap-10 lg:grid-cols-12 lg:gap-16">
           {/* Category selector: sticky list on desktop, scrolling pills on mobile */}
           <div className="lg:col-span-4">
-            <div className="sticky top-16 z-20 -mx-5 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden bg-paper/90 px-5 py-3 backdrop-blur lg:top-28 lg:mx-0 lg:overflow-visible lg:bg-transparent lg:p-0 lg:backdrop-blur-none">
+            <div className="sticky top-[4.25rem] z-20 -mx-5 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden bg-paper/90 px-5 py-3 backdrop-blur lg:top-28 lg:mx-0 lg:overflow-visible lg:bg-transparent lg:p-0 lg:backdrop-blur-none">
               <ul className="flex gap-2 lg:flex-col lg:gap-0" role="tablist" aria-label="Catégories du menu">
                 {menu.map((c, i) => {
                   const on = c.id === active;
@@ -67,7 +67,7 @@ export default function MenuSection() {
           </div>
 
           {/* Items */}
-          <div id="menu-items" className="scroll-mt-32 lg:col-span-8">
+          <div id="menu-items" className="scroll-mt-36 lg:col-span-8">
             <div key={active}>
               <div className="flex items-end justify-between gap-4 border-b-2 border-olive-deep pb-4">
                 <h3 className="menu-title font-serif text-[clamp(2.6rem,6vw,5rem)] font-light leading-none text-olive-deep">
@@ -104,7 +104,7 @@ export default function MenuSection() {
                             <button
                               onClick={() => add(item.name, item.price as number)}
                               aria-label={`Ajouter ${item.name} au panier`}
-                              className="add ml-1 flex h-10 w-10 items-center justify-center sm:h-8 sm:w-8 rounded-full bg-olive-deep text-lg leading-none text-ivory hover:bg-saffron hover:text-ink"
+                              className="add ml-1 flex h-11 w-11 items-center justify-center sm:h-8 sm:w-8 rounded-full bg-olive-deep text-lg leading-none text-ivory hover:bg-saffron hover:text-ink"
                             >
                               +
                             </button>
@@ -115,7 +115,7 @@ export default function MenuSection() {
                             key={p.label}
                             onClick={() => add(`${item.name} (${p.label})`, p.value)}
                             aria-label={`Ajouter ${item.name} ${p.label} au panier`}
-                            className="rounded-full border border-ink/15 px-3 py-1.5 text-sm font-semibold text-olive-deep transition-colors hover:border-saffron hover:bg-saffron hover:text-ink"
+                            className="min-h-11 rounded-full border border-ink/15 px-3 py-1.5 text-sm font-semibold md:min-h-0 text-olive-deep transition-colors hover:border-saffron hover:bg-saffron hover:text-ink"
                           >
                             <span className="mr-1 text-[0.65rem] uppercase tracking-wider text-ink/45">{p.label}</span>
                             {p.value}

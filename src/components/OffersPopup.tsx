@@ -1,8 +1,9 @@
-﻿"use client";
+"use client";
 
 import { useEffect, useState } from "react";
 import { offers, type Offer } from "@/data/offers";
 import { useCart } from "@/components/CartProvider";
+import { useScrollLock } from "@/lib/scrollLock";
 
 const SEEN_KEY = "offers-seen";
 
@@ -17,6 +18,8 @@ export default function OffersPopup() {
       seen = sessionStorage.getItem(SEEN_KEY) === "1";
     } catch {}
     if (seen) return;
+    // Phones: no full-screen interstitial on load (bad UX + mobile SEO). They get the floating pill instead.
+    if (!window.matchMedia("(min-width: 768px)").matches) return;
     const t = setTimeout(() => setShow(true), 1200);
     return () => clearTimeout(t);
   }, []);
@@ -26,13 +29,11 @@ export default function OffersPopup() {
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") close();
     };
-    document.body.style.overflow = "hidden";
     window.addEventListener("keydown", onKey);
-    return () => {
-      document.body.style.overflow = "";
-      window.removeEventListener("keydown", onKey);
-    };
+    return () => window.removeEventListener("keydown", onKey);
   }, [show]);
+
+  useScrollLock(show);
 
   function close() {
     setShow(false);
@@ -48,7 +49,16 @@ export default function OffersPopup() {
     openCart(true);
   }
 
-  if (!show) return null;
+  if (!show)
+    return (
+      <button
+        onClick={() => setShow(true)}
+        aria-label="Voir les offres spéciales"
+        className="fixed bottom-[max(6.25rem,env(safe-area-inset-bottom))] right-[max(1.25rem,env(safe-area-inset-right))] z-50 flex min-h-11 items-center gap-2 rounded-full bg-harissa px-4 text-sm font-bold text-ivory shadow-[0_12px_30px_-8px_rgba(0,0,0,.5)]"
+      >
+        🔥 Offres
+      </button>
+    );
 
   return (
     <div
@@ -74,12 +84,12 @@ export default function OffersPopup() {
         role="dialog"
         aria-label="Offres spéciales"
         onClick={(e) => e.stopPropagation()}
-        className="offers-box relative max-h-[94svh] w-full max-w-5xl overflow-y-auto rounded-t-[2rem] bg-gradient-to-b from-moss to-olive-deep p-5 text-ivory ring-1 ring-saffron/40 md:rounded-[2rem] md:p-9"
+        className="offers-box relative max-h-[94dvh] w-full max-w-5xl overflow-y-auto overscroll-contain rounded-t-[2rem] bg-gradient-to-b from-moss to-olive-deep p-5 text-ivory ring-1 ring-saffron/40 md:rounded-[2rem] md:p-9"
       >
         <button
           onClick={close}
           aria-label="Fermer"
-          className="absolute right-4 top-4 z-20 h-10 w-10 rounded-full bg-ivory/10 text-2xl leading-none text-ivory backdrop-blur transition hover:bg-harissa"
+          className="absolute right-4 top-4 z-20 h-11 w-11 rounded-full bg-ivory/10 text-2xl leading-none text-ivory backdrop-blur transition hover:bg-harissa"
         >
           ×
         </button>
@@ -182,4 +192,3 @@ export default function OffersPopup() {
     </div>
   );
 }
-
