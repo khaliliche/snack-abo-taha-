@@ -176,6 +176,8 @@ const photos: Partial<Record<FoodKind, string>> = {
   burger: "/images/food/burger.webp",
   tacos: "/images/food/tacos.webp",
   juice: "/images/food/juice.webp",
+  leaf: "/images/food/leaf.webp",
+  fries: "/images/food/fries.webp",
 };
 
 export default function FoodArt({ kind }: { kind: FoodKind }) {

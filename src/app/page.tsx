@@ -1,4 +1,4 @@
-import Navbar from "@/components/Navbar";
+﻿import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import Marquee from "@/components/Marquee";
 import About from "@/components/About";
@@ -9,6 +9,7 @@ import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import CartProvider from "@/components/CartProvider";
 import CartBar from "@/components/CartBar";
+import OffersPopup from "@/components/OffersPopup";
 
 export default function Home() {
   return (
@@ -24,6 +25,7 @@ export default function Home() {
       </main>
       <Footer />
       <CartBar />
+      <OffersPopup />
       <WhatsAppButton />
     </CartProvider>
   );

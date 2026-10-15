@@ -22,7 +22,7 @@ export const showcase: ShowcaseRow[] = [
     n: "01",
     eyebrow: "Nos incontournables",
     title: "Tacos",
-    sub: "Tacos, burgers & chawarma — roulés, grillés et garnis à la commande.",
+    sub: "Tacos, burgers & chawarma â€” roulÃ©s, grillÃ©s et garnis Ã  la commande.",
     cta: "Voir les tacos",
     target: "tacos",
     foods: [
@@ -35,9 +35,9 @@ export const showcase: ShowcaseRow[] = [
   {
     id: "pizzas",
     n: "02",
-    eyebrow: "Au feu de la pâte",
+    eyebrow: "Au feu de la pÃ¢te",
     title: "Pizzas",
-    sub: "Pizzas, pâtes & tajines — du simple margherita aux fruits de mer.",
+    sub: "Pizzas, pÃ¢tes & tajines â€” du simple margherita aux fruits de mer.",
     cta: "Voir les pizzas",
     target: "pizzas",
     foods: [
@@ -50,9 +50,9 @@ export const showcase: ShowcaseRow[] = [
   {
     id: "jus",
     n: "03",
-    eyebrow: "Pressés minute",
+    eyebrow: "PressÃ©s minute",
     title: "Jus frais",
-    sub: "Orange, avocat, banane, panaché — des jus onctueux, servis bien frais.",
+    sub: "Orange, avocat, banane, panachÃ© â€” des jus onctueux, servis bien frais.",
     cta: "Voir les boissons",
     target: "jus",
     foods: [
@@ -69,6 +69,6 @@ export const heroFoods: FoodItem[] = [
   { kind: "pizza", left: "75%", top: "13%", size: "clamp(170px,25vw,370px)", m: { left: "58%", top: "10%", size: "46vw" }, rot: 14, fromX: 80, fromY: -30, scale: 0.75, delay: 0.62, depth: 22 },
   { kind: "burger", left: "14%", top: "66%", size: "clamp(120px,16vw,240px)", m: { left: "-4%", top: "72%", size: "38vw" }, rot: -6, fromX: -50, fromY: 50, scale: 0.8, delay: 0.76, depth: 30, float: 5.2 },
   { kind: "juice", left: "78%", top: "62%", size: "clamp(110px,15vw,220px)", m: { left: "68%", top: "74%", size: "30vw" }, rot: 9, fromX: 50, fromY: 50, scale: 0.8, delay: 0.88, depth: 18, float: 4.8 },
-  { kind: "chili", left: "30%", top: "10%", size: "clamp(44px,6vw,90px)", m: false, rot: -28, fromX: -20, fromY: -40, scale: 0.8, delay: 1, depth: 34, float: 3.9 },
+  { kind: "fries", left: "29%", top: "9%", size: "clamp(90px,11vw,160px)", m: false, rot: -10, fromX: -20, fromY: -40, scale: 0.8, delay: 1, depth: 34, float: 3.9 },
   { kind: "leaf", left: "62%", top: "78%", size: "clamp(50px,7vw,110px)", m: false, rot: 24, fromX: 20, fromY: 40, scale: 0.8, delay: 1.1, depth: 34, float: 4.5 },
 ];
