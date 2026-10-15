@@ -138,7 +138,7 @@ export default function FoodField({ foods, immediate = false, pointer = false, c
           <div key={`${f.kind}-${i}`} className={`food ${f.m === false ? "food--nm" : ""}`} style={style}>
             <div className="food__in">
               <div className="food__art">
-                <FoodArt kind={f.kind} />
+                <FoodArt kind={f.kind} priority={immediate && i < 2} />
               </div>
             </div>
           </div>

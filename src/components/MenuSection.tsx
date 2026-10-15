@@ -1,17 +1,23 @@
 "use client";
 
+import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { menu } from "@/data/menu";
-import Reveal from "@/components/Reveal";
 import { useCart } from "@/components/CartProvider";
 import { vars } from "@/lib/css";
 
 export default function MenuSection() {
-  const [active, setActive] = useState(menu[0].id);
+  const param = useSearchParams().get("c");
+  const [active, setActive] = useState(menu.some((c) => c.id === param) ? (param as string) : menu[0].id);
+  const select = (id: string) => {
+    setActive(id);
+    window.history.replaceState(null, "", `/menu?c=${id}`);
+    if (window.innerWidth < 1024) document.getElementById("menu-items")?.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
   const category = menu.find((c) => c.id === active) ?? menu[0];
   const { add } = useCart();
 
-  // Opened from the showcase CTAs
+  // Permet à d'autres composants de changer de catégorie : window.dispatchEvent(new CustomEvent("menu:select", { detail: "pizzas" }))
   useEffect(() => {
     const onSelect = (e: Event) => {
       const id = (e as CustomEvent<string>).detail;
@@ -22,18 +28,9 @@ export default function MenuSection() {
   }, []);
 
   return (
-    <section id="menu" className="bg-paper px-5 pb-[clamp(6rem,11vw,10rem)] pt-[clamp(6rem,11vw,10rem)] md:px-10">
+    <section id="menu" className="min-h-[70vh] bg-paper px-5 pb-[clamp(6rem,11vw,10rem)] pt-[clamp(3rem,6vw,5rem)] md:px-10">
       <div className="mx-auto max-w-7xl">
-        <Reveal>
-          <p className="text-[0.7rem] font-semibold uppercase tracking-[0.4em] text-harissa">02 — Notre carte</p>
-        </Reveal>
-        <Reveal delay={0.1}>
-          <h2 className="mt-5 font-serif text-[clamp(3rem,8vw,7.5rem)] font-light leading-[0.95] text-olive-deep">
-            Le menu <em className="text-harissa">complet</em>
-          </h2>
-        </Reveal>
-
-        <div className="mt-14 grid gap-10 lg:grid-cols-12 lg:gap-16">
+        <div className="grid gap-10 lg:grid-cols-12 lg:gap-16">
           {/* Category selector: sticky list on desktop, scrolling pills on mobile */}
           <div className="lg:col-span-4">
             <div className="sticky top-16 z-20 -mx-5 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden bg-paper/90 px-5 py-3 backdrop-blur lg:top-28 lg:mx-0 lg:overflow-visible lg:bg-transparent lg:p-0 lg:backdrop-blur-none">
@@ -45,7 +42,7 @@ export default function MenuSection() {
                       <button
                         role="tab"
                         aria-selected={on}
-                        onClick={() => { setActive(c.id); if (window.innerWidth < 1024) document.getElementById("menu-items")?.scrollIntoView({ behavior: "smooth", block: "start" }); }}
+                        onClick={() => select(c.id)}
                         className={`group flex items-baseline gap-4 whitespace-nowrap rounded-full border px-5 py-3 text-sm font-semibold transition-all duration-500 lg:w-full lg:rounded-none lg:border-0 lg:border-b lg:border-ink/10 lg:bg-transparent lg:px-0 lg:py-3 ${
                           on
                             ? "border-olive-deep bg-olive-deep text-ivory lg:text-harissa"

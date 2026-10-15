@@ -3,13 +3,13 @@ import FoodField from "@/components/FoodField";
 import Reveal from "@/components/Reveal";
 
 const foods = [
-  { kind: "chili" as const, left: "84%", top: "6%", size: "clamp(60px,9vw,130px)", m: { left: "76%", top: "2%", size: "22vw" }, rot: 28, fromX: 30, fromY: -30, scale: 0.8, delay: 0.1, depth: 24 },
-  { kind: "leaf" as const, left: "2%", top: "78%", size: "clamp(70px,10vw,150px)", m: false as const, rot: -20, fromX: -30, fromY: 30, scale: 0.8, delay: 0.25, depth: 18 },
+  { kind: "juice" as const, left: "80%", top: "10%", size: "clamp(110px,15vw,220px)", m: { left: "70%", top: "4%", size: "30vw" }, rot: 28, fromX: 30, fromY: -30, scale: 0.8, delay: 0.1, depth: 24 },
+  { kind: "burger" as const, left: "2%", top: "72%", size: "clamp(110px,15vw,230px)", m: false as const, rot: -20, fromX: -30, fromY: 30, scale: 0.8, delay: 0.25, depth: 18 },
 ];
 
 export default function Contact() {
   return (
-    <section id="contact" data-food-host className="relative overflow-x-clip bg-olive-deep px-5 py-[clamp(6rem,11vw,10rem)] text-ivory md:px-10">
+    <section id="contact" data-food-host className="relative overflow-x-clip bg-olive-deep px-5 pb-[clamp(6rem,11vw,10rem)] pt-[clamp(9rem,15vw,12rem)] text-ivory md:px-10">
       <div
         aria-hidden
         className="absolute inset-0"

@@ -1,63 +1,64 @@
-"use client";
-
+import Link from "next/link";
 import FoodField from "@/components/FoodField";
 import Reveal from "@/components/Reveal";
-import { vars } from "@/lib/css";
 import { showcase } from "@/data/showcase";
+import { vars } from "@/lib/css";
+import { categoryFrom } from "@/lib/menu";
 
-/** Tell the menu which category to open, then scroll to it. */
-function openCategory(id: string) {
-  window.dispatchEvent(new CustomEvent("menu:select", { detail: id }));
-  document.getElementById("menu")?.scrollIntoView({ behavior: "smooth", block: "start" });
+/** Titre découpé en lettres (effet de survol défini dans globals.css : .row-title .ch). */
+function Letters({ text }: { text: string }) {
+  return (
+    <>
+      {Array.from(text).map((c, i) => (
+        <span key={i} className="ch" aria-hidden style={vars({ "--i": i })}>
+          {c === " " ? "\u00A0" : c}
+        </span>
+      ))}
+    </>
+  );
 }
 
 export default function Showcase() {
   return (
-    <section id="specialites" className="relative overflow-x-clip bg-olive text-ivory">
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-0"
-        style={{
-          background:
-            "radial-gradient(70% 40% at 50% 0%, rgba(243,234,210,.10), transparent 70%), radial-gradient(60% 40% at 50% 100%, rgba(43,49,33,.55), transparent 70%)",
-        }}
-      />
-
-      <div className="relative px-5 pb-6 pt-[clamp(6rem,11vw,10rem)] text-center">
-        <Reveal>
-          <p className="text-[0.7rem] font-medium uppercase tracking-[0.5em] text-saffron">Nos spécialités</p>
-        </Reveal>
-      </div>
-
-      {showcase.map((row) => (
-        <article key={row.id} data-food-host className="showcase-row relative">
-          <div className="rule absolute inset-x-0 top-0 mx-auto h-px max-w-[1100px] bg-ivory/25" />
+    <section id="specialites">
+      {showcase.map((row, i) => (
+        <article
+          key={row.id}
+          data-food-host
+          className={`showcase-row relative flex min-h-[clamp(34rem,62vw,46rem)] items-center justify-center overflow-x-clip px-5 py-[clamp(4rem,8vw,7rem)] text-center md:px-10 ${
+            i % 2 === 0 ? "bg-paper" : "bg-sand/60"
+          }`}
+        >
           <FoodField foods={row.foods} />
 
-          <div className="relative z-10 mx-auto max-w-[1100px] px-5 py-[clamp(7.5rem,13vw,11rem)] text-center">
-            <p className="text-[0.68rem] font-medium uppercase tracking-[0.45em] text-ivory/60">
-              {row.n} — {row.eyebrow}
-            </p>
-            <h3
-              className="row-title mt-5 font-serif text-[clamp(3.4rem,12.5vw,10.5rem)] font-light uppercase leading-[0.95] tracking-[0.06em]"
-              aria-label={row.title}
-            >
-              {Array.from(row.title).map((c, i) => (
-                <span key={i} aria-hidden className="ch" style={vars({ "--i": i })}>
-                  {c === " " ? "\u00a0" : c}
-                </span>
-              ))}
-            </h3>
-            <p className="mx-auto mt-6 max-w-md text-sm leading-relaxed text-ivory/75 md:text-base">{row.sub}</p>
-            <button onClick={() => openCategory(row.target)} className="btn btn-ghost mt-8">
-              {row.cta} <span className="arrow">→</span>
-            </button>
+          <div className="relative z-10 mx-auto max-w-3xl">
+            <Reveal>
+              <p className="text-[0.7rem] font-semibold uppercase tracking-[0.4em] text-harissa">
+                {row.n} — {row.eyebrow}
+              </p>
+            </Reveal>
+            <Reveal as="h2" delay={0.1} className="row-title mt-5 font-serif text-[clamp(4rem,13vw,11rem)] font-light leading-[0.9] text-olive-deep">
+              <span className="sr-only">{row.title}</span>
+              <Letters text={row.title} />
+            </Reveal>
+            <div className="rule mx-auto mt-8 h-px w-40 bg-ink/30" aria-hidden />
+            <Reveal delay={0.2}>
+              <p className="mx-auto mt-8 max-w-md text-base leading-relaxed text-ink/70 md:text-lg">{row.sub}</p>
+              {(() => {
+                const from = row.id === "jus" ? categoryFrom("jus", (it) => it.name.startsWith("Jus")) : categoryFrom(row.target);
+                return from ? (
+                  <p className="mt-4 text-xs font-semibold uppercase tracking-[0.3em] text-harissa">À partir de {from} DH</p>
+                ) : null;
+              })()}
+            </Reveal>
+            <Reveal delay={0.3} className="mt-10">
+              <Link href={`/menu?c=${row.target}`} className="btn btn-dark">
+                {row.cta} <span className="arrow">→</span>
+              </Link>
+            </Reveal>
           </div>
         </article>
       ))}
-
-      <div className="relative mx-auto h-px max-w-[1100px] bg-ivory/25" />
-      <div className="h-[clamp(4rem,8vw,7rem)]" />
     </section>
   );
 }
