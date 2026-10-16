@@ -65,8 +65,8 @@ export const showcase: ShowcaseRow[] = [
 ];
 
 export const heroFoods: FoodItem[] = [
-  { kind: "tacos", left: "4%", top: "20%", size: "clamp(150px,22vw,330px)", m: { left: "-7%", top: "6.5rem", size: "34vw" }, rot: -12, fromX: -80, fromY: 40, scale: 0.75, delay: 0.5, depth: 26 },
-  { kind: "pizza", left: "75%", top: "13%", size: "clamp(170px,25vw,370px)", m: { left: "62%", top: "6rem", size: "38vw" }, rot: 14, fromX: 80, fromY: -30, scale: 0.75, delay: 0.62, depth: 22 },
+  { kind: "tacos", left: "4%", top: "20%", size: "clamp(150px,22vw,330px)", m: { left: "-7%", top: "9rem", size: "30vw" }, rot: -12, fromX: -80, fromY: 40, scale: 0.75, delay: 0.5, depth: 26 },
+  { kind: "pizza", left: "75%", top: "13%", size: "clamp(170px,25vw,370px)", m: { left: "64%", top: "8.75rem", size: "34vw" }, rot: 14, fromX: 80, fromY: -30, scale: 0.75, delay: 0.62, depth: 22 },
   { kind: "burger", left: "14%", top: "66%", size: "clamp(120px,16vw,240px)", m: { left: "-6%", top: "calc(100% - 10rem)", size: "34vw" }, rot: -6, fromX: -50, fromY: 50, scale: 0.8, delay: 0.76, depth: 30, float: 5.2 },
   { kind: "juice", left: "78%", top: "62%", size: "clamp(110px,15vw,220px)", m: { left: "72%", top: "calc(100% - 9.5rem)", size: "28vw" }, rot: 9, fromX: 50, fromY: 50, scale: 0.8, delay: 0.88, depth: 18, float: 4.8 },
   { kind: "fries", left: "29%", top: "9%", size: "clamp(90px,11vw,160px)", m: false, rot: -10, fromX: -20, fromY: -40, scale: 0.8, delay: 1, depth: 34, float: 3.9 },
