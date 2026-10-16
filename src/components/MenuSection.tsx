@@ -84,9 +84,9 @@ export default function MenuSection() {
   return (
     <section id="menu" className="min-h-[70vh] overflow-x-clip bg-paper px-5 pb-[clamp(7rem,11vw,10rem)] pt-[clamp(1.5rem,6vw,5rem)] md:px-10">
       <div className="mx-auto w-full max-w-7xl">
-        <div className="grid gap-5 lg:grid-cols-12 lg:gap-16">
+        <div className="grid grid-cols-[minmax(0,1fr)] gap-5 lg:grid-cols-12 lg:gap-16">
           {/* Sélecteur : liste sticky sur desktop, barre de pastilles à snap sur mobile */}
-          <div className="lg:col-span-4">
+          <div className="min-w-0 lg:col-span-4">
             <div
               ref={barRef}
               className="sticky top-[4.25rem] z-20 -mx-5 snap-x snap-proximity overflow-x-auto overscroll-x-contain border-b border-ink/10 bg-paper/95 px-5 py-3 backdrop-blur [scrollbar-width:none] [&::-webkit-scrollbar]:hidden md:-mx-10 md:px-10 lg:top-28 lg:mx-0 lg:snap-none lg:overflow-visible lg:border-0 lg:bg-transparent lg:p-0 lg:backdrop-blur-none"
