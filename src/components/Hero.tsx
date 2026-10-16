@@ -10,7 +10,7 @@ export default function Hero() {
     <section
       id="accueil"
       data-food-host
-      className="relative flex min-h-[100svh] items-center justify-center overflow-x-clip bg-olive-deep px-5 pb-44 pt-[17.5rem] text-center md:pb-28 md:pt-28 text-ivory"
+      className="relative flex min-h-[100svh] items-center justify-center overflow-x-clip bg-olive-deep px-5 pb-44 pt-[9.5rem] text-center md:pb-28 md:pt-28 text-ivory"
     >
       {/* atmosphere */}
       <div
@@ -24,6 +24,18 @@ export default function Hero() {
       <FoodField foods={heroFoods} immediate pointer />
 
       <div className="relative z-10 max-w-5xl">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="/images/logo-lg.webp"
+          alt="Snack Abo Taha"
+          width={384}
+          height={384}
+          fetchPriority="high"
+          decoding="async"
+          draggable={false}
+          className="fade-up mx-auto mb-5 h-28 w-28 object-contain drop-shadow-[0_12px_24px_rgba(0,0,0,.35)] md:mb-6 md:h-36 md:w-36 lg:h-44 lg:w-44"
+          style={vars({ "--rd": "0.1s" })}
+        />
         <p className="fade-up text-[0.7rem] font-medium uppercase tracking-[0.5em] text-saffron" style={vars({ "--rd": "0.2s" })}>
           Bienvenue chez
         </p>
