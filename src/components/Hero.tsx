@@ -10,7 +10,7 @@ export default function Hero() {
     <section
       id="accueil"
       data-food-host
-      className="relative flex min-h-[100svh] items-center justify-center overflow-x-clip bg-olive-deep px-5 pb-28 pt-28 text-center text-ivory"
+      className="relative flex min-h-[100svh] items-center justify-center overflow-x-clip bg-olive-deep px-5 pb-44 pt-[15rem] text-center md:pb-28 md:pt-28 text-ivory"
     >
       {/* atmosphere */}
       <div

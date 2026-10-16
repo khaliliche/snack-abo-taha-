@@ -27,6 +27,6 @@ export const featured: FeaturedDef[] = [
     ingredients: [{ kind: "cheese", label: "Fromage" }, { kind: "tomato", label: "Tomate" }, { kind: "leaf", label: "Salade" }, { kind: "onion", label: "Oignon" }] },
   { category: "tajines", name: "Tajine viande hachée omelette fromages", kind: "tajine", pitch: "Un tajine copieux, viande hachée, omelette et fromages.",
     ingredients: [{ kind: "egg", label: "Omelette" }, { kind: "cheese", label: "Fromages" }, { kind: "onion", label: "Oignon" }] },
-  { category: "jus", name: "Jus d'avocat", kind: "juice", pitch: "Onctueux, servi bien frais.",
+  { category: "jus", name: "Jus d'avocat", kind: "avocado", pitch: "Onctueux, servi bien frais.",
     ingredients: [{ kind: "avocado", label: "Avocat" }] },
 ];
