@@ -52,7 +52,7 @@ export default function Navbar() {
     >
       <nav className="mx-auto flex max-w-7xl items-center justify-between px-5 md:px-10">
         <Link href="/" aria-label="Snack Abo Taha" className="relative z-50 text-2xl" onClick={() => setOpen(false)}>
-          <Logo />
+          <Logo compact={scrolled || open} />
         </Link>
 
         <ul className="hidden items-center gap-10 text-[0.7rem] font-medium uppercase tracking-[0.25em] md:flex">

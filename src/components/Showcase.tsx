@@ -25,7 +25,7 @@ export default function Showcase() {
         <article
           key={row.id}
           data-food-host
-          className={`showcase-row relative flex min-h-[clamp(34rem,62vw,46rem)] items-center justify-center overflow-x-clip px-5 py-[clamp(4rem,8vw,7rem)] text-center md:px-10 ${
+          className={`showcase-row relative flex min-h-[clamp(34rem,62vw,46rem)] items-center justify-center overflow-x-clip px-5 pb-[11rem] pt-[11rem] text-center md:px-10 md:py-[clamp(4rem,8vw,7rem)] ${
             i % 2 === 0 ? "bg-paper" : "bg-sand/60"
           }`}
         >
