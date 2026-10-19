@@ -23,11 +23,17 @@ const PHOTO: Record<string, string> = {
   pizzas: "/images/food/pizza",
   burgers: "/images/food/burger",
   chawarma: "/images/food/shawarma",
-  sandwichs: "/images/food/shawarma",
+  sandwichs: "/images/food/sandwich-poulet", // new (was shawarma)
+  panini: "/images/food/panini",             // new
   poutine: "/images/food/frites",
+  spaghetti: "/images/food/spaghetti",       // new
+  plats: "/images/food/plat",                // new
   tajines: "/images/food/tajine",
+  poulet: "/images/food/poulet",             // new
   salades: "/images/food/leaf",
   jus: "/images/food/juice",
+  bakito: "/images/food/bakito",
+  cosamia: "/images/food/cosamia",
 };
 
 const HEADER_PHOTOS = ["tacos", "pizza", "burger", "juice"];
