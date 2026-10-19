@@ -14,7 +14,7 @@ export const site = {
   mapLink: "https://maps.app.goo.gl/urGXkunJ7JrFHqZ7A?g_st=iw",
   socials: {
     facebook: "",
-    instagram: "",
+    instagram: "https://www.instagram.com/snack_abotaha",
     tiktok: "",
   },
 };

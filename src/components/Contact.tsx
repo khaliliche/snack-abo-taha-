@@ -64,9 +64,27 @@ export default function Contact() {
                 </div>
               </div>
 
-              <a href={whatsappLink()} target="_blank" rel="noopener noreferrer" className="btn btn-solid mt-10">
-                Commander sur WhatsApp <span className="arrow">→</span>
-              </a>
+              <div className="mt-10 flex flex-wrap items-center gap-4">
+                <a href={whatsappLink()} target="_blank" rel="noopener noreferrer" className="btn btn-solid">
+                  Commander sur WhatsApp <span className="arrow">→</span>
+                </a>
+                {site.socials.instagram && (
+                  <a
+                    href={site.socials.instagram}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="Instagram"
+                    className="btn btn-ghost"
+                  >
+                    <svg viewBox="0 0 24 24" className="mr-2 h-4 w-4" fill="none" stroke="currentColor" strokeWidth="1.8">
+                      <rect x="3" y="3" width="18" height="18" rx="5" />
+                      <circle cx="12" cy="12" r="4" />
+                      <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none" />
+                    </svg>
+                    @snack_abotaha <span className="arrow">→</span>
+                  </a>
+                )}
+              </div>
             </div>
           </Reveal>
 
